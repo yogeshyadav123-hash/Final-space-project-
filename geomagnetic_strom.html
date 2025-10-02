@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geomagnetic Storms: Impact on Earth</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #0d1b2a;
+            --secondary-color: #1b263b;
+            --text-color: #e0e1dd;
+            --accent-color: #00aeff; /* Changed accent to a cool blue */
+            --glow-color-low: rgba(76, 175, 80, 0.7); /* Green */
+            --glow-color-medium: rgba(255, 152, 0, 0.7); /* Orange */
+            --glow-color-high: rgba(244, 67, 54, 0.8); /* Red */
+        }
+        
+        /* NEW KEYFRAME ANIMATION: Moves the background horizontally (Right to Left) */
+        @keyframes starlight {
+            /* Move 1000px to the right, which visually pushes the stars to the LEFT */
+            from { background-position: 0 0; }
+            to { background-position: 1000px 0; } 
+        }
+
+        body {
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            
+            /* MODIFIED: Add animation and background-attachment for continuous effect */
+            background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
+            background-attachment: fixed;
+            animation: starlight 60s linear infinite; /* 60 seconds duration for a slow, smooth flow */
+        }
+
+        header {
+            background: var(--secondary-color);
+            text-align: center;
+            padding: 2rem 1rem;
+            border-bottom: 3px solid var(--accent-color);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            color: var(--accent-color);
+            text-shadow: 0 0 10px var(--accent-color);
+        }
+
+        main {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .card {
+            background-color: var(--secondary-color);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            border: 1px solid #415a77;
+        }
+
+        h2, h3 {
+            color: var(--text-color);
+            border-bottom: 2px solid #415a77;
+            padding-bottom: 0.5rem;
+        }
+
+        h3 {
+            text-align: center;
+            font-size: 1.8rem;
+            margin-top: 2rem;
+            transition: color 0.3s ease;
+        }
+
+        .responsive-img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            display: block;
+            margin: 1rem auto;
+        }
+
+        /* Interactive Slider */
+        .slider-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .slider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 60%;
+            height: 10px;
+            background: #415a77;
+            outline: none;
+            opacity: 0.8;
+            transition: opacity .2s;
+            border-radius: 5px;
+        }
+
+        .slider:hover {
+            opacity: 1;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 25px;
+            height: 25px;
+            background: var(--accent-color);
+            cursor: pointer;
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--accent-color);
+        }
+
+        .slider::-moz-range-thumb {
+            width: 25px;
+            height: 25px;
+            background: var(--accent-color);
+            cursor: pointer;
+            border-radius: 50%;
+        }
+
+        .label {
+            font-weight: bold;
+        }
+
+        /* Impact Grid */
+        .impact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .impact-card {
+            background: #0d1b2a;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid #415a77;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .impact-card h4 {
+            margin-top: 0;
+            color: var(--accent-color);
+        }
+
+        /* Glow effects for interactivity */
+        .glow-low { box-shadow: 0 0 15px var(--glow-color-low); }
+        .glow-medium { box-shadow: 0 0 20px var(--glow-color-medium); }
+        .glow-high { box-shadow: 0 0 25px var(--glow-color-high); transform: scale(1.02); }
+
+
+        /* Live Data Section */
+        .live-data-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            text-align: center;
+        }
+
+        .live-img {
+            max-width: 100%;
+            border-radius: 8px;
+            border: 2px solid #415a77;
+            background-color: #000;
+        }
+
+        figcaption {
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1rem;
+            margin-top: 2rem;
+            font-size: 0.9rem;
+            color: #778da9;
+            border-top: 1px solid #1b263b;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            .impact-grid, .live-data-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Geomagnetic Storms</h1>
+        <p>Earth's magnetic shield under siege</p>
+    </header>
+
+    <main>
+        <section class="card">
+            <h2>What is a Geomagnetic Storm?</h2>
+            <p>A geomagnetic storm is a major disturbance of Earth's magnetosphere that occurs when there is a very efficient exchange of energy from the solar wind into the space environment surrounding Earth. These storms are caused by solar events like <strong>Coronal Mass Ejections (CMEs)</strong> that send a wave of charged particles and magnetic fields toward Earth.</p>
+            <p>The severity of a storm depends on the strength and orientation of the solar magnetic field. A strong "southward" pointing magnetic field (B_z) from the CME essentially unlocks Earth's own magnetic field, allowing vast amounts of energy to pour in.</p>
+        </section>
+
+        <section class="card">
+            <h2>The G-Scale: Measuring the Storm</h2>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Magnetosphere_rendition.jpg/1024px-Magnetosphere_rendition.jpg" alt="Diagram of Earth's magnetosphere deflecting solar wind" class="responsive-img">
+            <p>Geomagnetic storms are ranked on a 5-level "G-Scale," from G1 (Minor) to G5 (Extreme), which is based on the observed Planetary K-index (Kp), a measure of global geomagnetic activity. A higher G-number means more significant impacts.</p>
+        </section>
+
+        <section id="interactive-section" class="card">
+            <h2>Explore the Impacts by G-Scale</h2>
+            <p>The effects of a geomagnetic storm range from beautiful auroras to widespread technological disruption. <strong>Drag the slider below to see the impacts at each level.</strong></p>
+            
+            <div class="slider-container">
+                <span class="label">Minor</span>
+                <input type="range" min="1" max="5" value="1" class="slider" id="storm-slider" aria-label="Geomagnetic storm intensity selector">
+                <span class="label">Extreme</span>
+            </div>
+            
+            <h3 id="storm-class-title">G1: Minor Storm</h3>
+
+            <div class="impact-grid">
+                <div id="impact-aurora" class="impact-card">
+                    <h4>🌌 Auroras</h4>
+                    <p id="aurora-text">Aurora is commonly visible at high latitudes (e.g., northern Michigan and Maine).</p>
+                </div>
+                <div id="impact-grid" class="impact-card">
+                    <h4>⚡ Power Grids</h4>
+                    <p id="grid-text">Weak power grid fluctuations can occur. Minor impact on satellite operations is possible.</p>
+                </div>
+                <div id="impact-gps" class="impact-card">
+                    <h4>🛰️ Satellites & GPS</h4>
+                    <p id="gps-text">Minor impact on satellite operations is possible.</p>
+                </div>
+                <div id="impact-comms" class="impact-card">
+                    <h4>📡 Communications</h4>
+                    <p id="comms-text">High-frequency (HF) radio propagation can fade at higher latitudes.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>Live Geomagnetic Conditions</h2>
+            <p>Data courtesy of the NOAA Space Weather Prediction Center. Images may take a moment to load.</p>
+            <div class="live-data-grid">
+                <figure>
+                    <figcaption>Estimated Kp-index</figcaption>
+                    <a href="https://www.swpc.noaa.gov/products/planetary-k-index" target="_blank" rel="noopener noreferrer">
+                        <img src="kpindex.png" alt="Live graph of estimated Planetary K-index" class="live-img">
+          
+                        </a>
+                </figure>
+                <figure>
+                    <figcaption>3-Day Aurora Forecast</figcaption>
+                    <a href="https://www.swpc.noaa.gov/products/aurora-3-day-forecast" target="_blank" rel="noopener noreferrer">
+                        <img src="https://services.swpc.noaa.gov/images/aurora-forecast-northern-hemisphere.jpg" alt="Live aurora forecast map from NOAA" class="live-img">
+                    </a>
+                </figure>
+                <figure>
+                    <figcaption>Ovation Auroral Forecast</figcaption>
+                     <a href="https://www.swpc.noaa.gov/products/aurora-30-minute-forecast" target="_blank" rel="noopener noreferrer">
+                        <img src="https://services.swpc.noaa.gov/images/animations/ovation/north/latest.jpg" alt="Live 30-minute Ovation auroral forecast" class="live-img">
+                    </a>
+                </figure>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>Interactive webpage created by SaVeya Group . Information based on data from NASA and NOAA.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const slider = document.getElementById('storm-slider');
+            const stormTitle = document.getElementById('storm-class-title');
+
+            const auroraCard = document.getElementById('impact-aurora');
+            const gridCard = document.getElementById('impact-grid');
+            const gpsCard = document.getElementById('impact-gps');
+            const commsCard = document.getElementById('impact-comms');
+
+            const auroraText = document.getElementById('aurora-text');
+            const gridText = document.getElementById('grid-text');
+            const gpsText = document.getElementById('gps-text');
+            const commsText = document.getElementById('comms-text');
+
+            const allCards = [auroraCard, gridCard, gpsCard, commsCard];
+
+            const stormData = {
+                '1': { // G1
+                    title: "G1: Minor Storm",
+                    aurora: "Aurora is commonly visible at high latitudes (e.g., northern Michigan and Maine).",
+                    grid: "Weak power grid fluctuations can occur. Minor impact on satellite operations is possible.",
+                    gps: "Minor impact on satellite operations is possible.",
+                    comms: "High-frequency (HF) radio propagation can fade at higher latitudes.",
+                    glowClass: "glow-low",
+                    titleColor: "#4caf50" // Green
+                },
+                '2': { // G2
+                    title: "G2: Moderate Storm",
+                    aurora: "Aurora has been seen as low as New York and Idaho. More widespread and vibrant.",
+                    grid: "High-latitude power systems may experience voltage alarms; long-duration storms may cause transformer damage.",
+                    gps: "Corrective actions to satellite orientation may be required by ground control.",
+                    comms: "HF radio propagation can fade at higher latitudes.",
+                    glowClass: "glow-low",
+                    titleColor: "#cddc39" // Lime
+                },
+                '3': { // G3
+                    title: "G3: Strong Storm",
+                    aurora: "Aurora has been seen as low as Illinois and Oregon. Very impressive displays.",
+                    grid: "Voltage corrections may be required, false alarms triggered on some protection devices.",
+                    gps: "Surface charging may occur on satellite components; intermittent satellite navigation (GPS) problems.",
+                    comms: "Intermittent satellite navigation and low-frequency radio navigation problems may occur.",
+                    glowClass: "glow-medium",
+                    titleColor: "#ff9800" // Orange
+                },
+                '4': { // G4
+                    title: "G4: Severe Storm",
+                    aurora: "Aurora has been seen as low as Alabama and northern California. A major event.",
+                    grid: "Widespread voltage control problems and some protective systems will mistakenly trip out key assets from the grid.",
+                    gps: "Extensive satellite surface charging; tracking and orientation problems. GPS may be degraded for hours.",
+                    comms: "HF radio propagation is sporadic. Satellite navigation degraded or unavailable for many hours.",
+                    glowClass: "glow-high",
+                    titleColor: "#f44336" // Red
+                },
+                '5': { // G5
+                    title: "G5: Extreme Storm",
+                    aurora: "Aurora seen as low as Florida and southern Texas. One of the most beautiful and dangerous natural events.",
+                    grid: "Widespread voltage control problems and protective system issues can occur; some grid systems may experience complete collapse or blackouts.",
+                    gps: "Satellites may be rendered useless. Widespread surface charging. GPS may be unavailable for days.",
+                    comms: "HF radio propagation may be impossible in many areas for one to two days. Satellite navigation is likely impossible.",
+                    glowClass: "glow-high",
+                    titleColor: "#b71c1c" // Dark Red
+                }
+            };
+
+            function updateImpacts(value) {
+                const data = stormData[value];
+
+                stormTitle.textContent = data.title;
+                stormTitle.style.color = data.titleColor;
+
+                auroraText.textContent = data.aurora;
+                gridText.textContent = data.grid;
+                gpsText.textContent = data.gps;
+                commsText.textContent = data.comms;
+
+                allCards.forEach(card => {
+                    card.classList.remove('glow-low', 'glow-medium', 'glow-high');
+                });
+                allCards.forEach(card => {
+                    card.classList.add(data.glowClass);
+                });
+            }
+
+            slider.addEventListener('input', (event) => {
+                updateImpacts(event.target.value);
+            });
+
+            updateImpacts(slider.value);
+        });
+    </script>
+</body>
+</html>

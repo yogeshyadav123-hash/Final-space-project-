@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Satellites & Technology Explorer</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-bg: #00000a;
+            --secondary-bg: #0a0a1a;
+            --text-color: #e0e1dd;
+            --accent-glow: #00eaff; /* Bright cyan for technology */
+            --card-bg: #1b263b;
+            --border-color: #415a77;
+        }
+
+        /* NEW KEYFRAME ANIMATION: Moves the background horizontally (Right to Left) */
+        @keyframes starlight {
+            /* Move 1000px to the right, which visually pushes the stars to the LEFT */
+            from { background-position: 0 0; }
+            to { background-position: 1000px 0; } 
+        }
+
+        body {
+            background-color: var(--primary-bg);
+            color: var(--text-color);
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            
+            /* MODIFIED: Background with Stardust image, gradient, and animation */
+            background-image: url('https://www.transparenttextures.com/patterns/stardust.png'), 
+                              linear-gradient(to bottom, #00000a, #1a1a2e);
+            background-attachment: fixed;
+            animation: starlight 60s linear infinite; /* 60 seconds duration for a slow, smooth flow */
+        }
+
+        header {
+            text-align: center;
+            padding: 2rem 1rem;
+        }
+
+        header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            color: var(--accent-glow);
+            text-shadow: 0 0 15px var(--accent-glow);
+            margin: 0;
+        }
+        
+        header p {
+            font-size: 1.1rem;
+            color: rgba(224, 225, 221, 0.8);
+        }
+
+        .satellite-categories {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+            padding: 2rem 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .category-button {
+            background-color: var(--secondary-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            padding: 1.5rem;
+            width: 200px; /* Fixed width */
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            color: var(--text-color);
+            text-decoration: none; /* For if it's an <a> tag */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .category-button:hover {
+            transform: translateY(-5px) scale(1.03);
+            border-color: var(--accent-glow);
+            box-shadow: 0 0 20px var(--accent-glow), 0 0 30px rgba(0, 234, 255, 0.2);
+            color: white;
+        }
+
+        .category-button.active {
+            border-color: white;
+            box-shadow: 0 0 20px white;
+            transform: scale(1.05);
+        }
+
+        .button-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.8rem;
+            color: var(--accent-glow);
+            text-shadow: 0 0 8px var(--accent-glow);
+        }
+
+        #satellite-info-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 2rem;
+            display: none; /* Hidden by default */
+            flex-direction: column;
+            gap: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .card-content {
+            display: flex;
+            gap: 2rem;
+            align-items: flex-start;
+        }
+
+        #satellite-image {
+            width: 250px;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 10px;
+            background-color: #000;
+        }
+        
+        #satellite-details {
+            flex-grow: 1;
+        }
+
+        #satellite-type {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.2rem;
+            margin: 0;
+            color: var(--accent-glow);
+            text-shadow: 0 0 5px var(--accent-glow);
+        }
+        
+        #satellite-description {
+            font-size: 1.1rem;
+            margin: 0.5rem 0 1.5rem 0;
+            color: rgba(224, 225, 221, 0.9);
+        }
+
+        #satellite-examples {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        #satellite-examples li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        #satellite-examples li:last-child {
+            border-bottom: none;
+        }
+        
+        #satellite-examples strong {
+            color: var(--accent-glow);
+            min-width: 120px;
+            display: inline-block;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            header h1 { font-size: 2.5rem; }
+            .satellite-categories { gap: 1rem; }
+            .category-button { width: 180px; font-size: 1rem; padding: 1rem; }
+            .button-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+
+            .card-content { flex-direction: column; align-items: center; text-align: center; }
+            #satellite-image { width: 200px; height: 200px; }
+            #satellite-type { font-size: 1.8rem; }
+            #satellite-description { font-size: 1rem; }
+        }
+        
+        @media (max-width: 480px) {
+            .category-button {
+                width: 90%; /* Take up more width */
+                font-size: 1rem;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Satellites & Technology Explorer</h1>
+        <p>Discover how satellites shape our world and beyond</p>
+    </header>
+
+    <main>
+        <div class="satellite-categories">
+            <button id="earth-observation" class="category-button" data-category="earth-observation">
+                <span class="button-icon">🌍</span>
+                Earth Observation
+            </button>
+            <button id="communication" class="category-button" data-category="communication">
+                <span class="button-icon">📡</span>
+                Communication
+            </button>
+            <button id="navigation" class="category-button" data-category="navigation">
+                <span class="button-icon">📍</span>
+                Navigation (GPS)
+            </button>
+            <button id="space-telescopes" class="category-button" data-category="space-telescopes">
+                <span class="button-icon">🔭</span>
+                Space Telescopes
+            </button>
+            <button id="weather" class="category-button" data-category="weather">
+                <span class="button-icon">☁️</span>
+                Weather Satellites
+            </button>
+            <button id="research" class="category-button" data-category="research">
+                <span class="button-icon">🔬</span>
+                Scientific Research
+            </button>
+        </div>
+
+        <section id="satellite-info-card">
+            <div class="card-content">
+                <img id="satellite-image" src="" alt="Image illustrating the satellite category">
+                <div id="satellite-details">
+                    <h2 id="satellite-type"></h2>
+                    <p id="satellite-description"></p>
+                    <ul id="satellite-examples"></ul>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const satelliteData = {
+                'earth-observation': {
+                    type: 'Earth Observation',
+                    description: 'These satellites monitor our planet\'s surface, oceans, and atmosphere, providing crucial data for environmental studies, land management, and disaster response.',
+                    // Changed to a stable NASA image
+                    image : 'earth_observation.jpeg',
+                  //  image: 'https://www.nasa.gov/sites/default/files/styles/full_width_feature/public/thumbnails/image/artemis-i-launch-20221116-full-res-color_0.jpeg', 
+                    examples: {
+                        'NASA/USGS': 'Landsat series',
+                        'ESA': 'Sentinel series',
+                        'NOAA': 'Terra & Aqua (with NASA)'
+                    }
+                },
+                'communication': {
+                    type: 'Communication',
+                    description: 'Communication satellites relay telephone calls, internet data, television broadcasts, and radio signals across vast distances, enabling global connectivity.',
+                    // Changed to a stable NASA image (generic satellite)
+                    image : 'communication satelite.png',
+                    // image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/NASA_Artist%27s_Concept_of_a_Telecommunications_Satellite.jpg/1024px-NASA_Artist%27s_Concept_of_a_Telecommunications_Satellite.jpg',
+                    examples: {
+                        'Commercial': 'Starlink, Intelsat, Eutelsat',
+                        'Government': 'Military communication satellites'
+                    }
+                },
+                'navigation': {
+                    type: 'Navigation (GPS)',
+                    description: 'Navigation satellites transmit precise timing and positioning data, allowing receivers on Earth to pinpoint their location with high accuracy. The most famous is GPS.',
+                    // Changed to a stable NASA image (GPS concept)
+                    image : 'navigation gps.png',
+                    // image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/GPS_satellite_artists_rendering.jpg/1024px-GPS_satellite_artists_rendering.jpg',
+                    examples: {
+                        'USA': 'GPS (Global Positioning System)',
+                        'Russia': 'GLONASS',
+                        'Europe': 'Galileo',
+                        'China': 'BeiDou'
+                    }
+                },
+                'space-telescopes': {
+                    type: 'Space Telescopes',
+                    description: 'Orbiting above Earth\'s atmosphere, space telescopes provide unparalleled views of the cosmos, free from atmospheric distortion, revealing secrets of distant galaxies, stars, and exoplanets.',
+                    // Changed to a stable NASA image (Webb)
+                    image : 'telescope.jpg',
+
+                    // image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/James_Webb_Space_Telescope_in_space.jpg/1024px-James_Webb_Space_Telescope_in_space.jpg',
+                    examples: {
+                        'NASA/ESA/CSA': 'James Webb Space Telescope',
+                        'NASA/ESA': 'Hubble Space Telescope',
+                        'NASA': 'Chandra X-ray Observatory'
+                    }
+                },
+                'weather': {
+                    type: 'Weather Satellites',
+                    description: 'These specialized Earth observation satellites track weather patterns, clouds, storms, and atmospheric conditions, providing data vital for forecasting and climate monitoring.',
+                    // Changed to a stable NASA image (GOES)
+                    image : 'weathersatellite.jpg',
+                    // image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/GOES_13_satellite_in_orbit.jpg/1024px-GOES_13_satellite_in_orbit.jpg',
+                    examples: {
+                        'NOAA/NASA': 'GOES series, JPSS series',
+                        'EUMETSAT': 'Meteosat series'
+                    }
+                },
+                'research': {
+                    type: 'Scientific Research',
+                    description: 'A broad category covering satellites designed to study various aspects of space, Earth\'s environment, physics, and astronomy, often with specialized instruments for specific experiments.',
+                    // Changed to a generic research satellite image
+                    image : 'scintific research.webp',
+                    // image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/TIMED_satellite_in_orbit.jpg/1024px-TIMED_satellite_in_orbit.jpg',
+                    examples: {
+                        'NASA': 'Parker Solar Probe, TESS, Spitzer',
+                        'ESA': 'Gaia, Cheops'
+                    }
+                }
+            };
+
+            const infoCard = document.getElementById('satellite-info-card');
+            const satelliteImage = document.getElementById('satellite-image');
+            const satelliteTypeEl = document.getElementById('satellite-type');
+            const satelliteDescriptionEl = document.getElementById('satellite-description');
+            const satelliteExamplesEl = document.getElementById('satellite-examples');
+            
+            const categoryButtons = document.querySelectorAll('.category-button');
+
+            categoryButtons.forEach(button => {
+                button.addEventListener('click', (event) => {
+                    const categoryId = event.currentTarget.dataset.category;
+                    updateInfoCard(categoryId);
+                });
+            });
+
+            function updateInfoCard(categoryId) {
+                const data = satelliteData[categoryId];
+                if (!data) return;
+                
+                // Remove active class from all buttons
+                categoryButtons.forEach(btn => btn.classList.remove('active'));
+                // Add active class to the clicked button
+                document.getElementById(categoryId).classList.add('active');
+
+                // Update content
+                satelliteImage.src = data.image;
+                satelliteImage.alt = `Image illustrating ${data.type} satellites`;
+                satelliteTypeEl.textContent = data.type;
+                satelliteDescriptionEl.textContent = data.description;
+                
+                satelliteExamplesEl.innerHTML = ''; // Clear previous examples
+                for (const [key, value] of Object.entries(data.examples)) {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<strong>${key}:</strong> ${value}`;
+                    satelliteExamplesEl.appendChild(li);
+                }
+                
+                // Show the card
+                infoCard.style.display = 'flex';
+                // Scroll to the card for a better user experience on mobile
+                infoCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    </script>
+</body>
+</html>

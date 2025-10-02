@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Solar System Explorer</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-bg: #00000a;
+            --secondary-bg: #0a0a1a;
+            --text-color: #e0e1dd;
+            --accent-glow: #e67e22; /* A warm, sun-like orange */
+            --card-bg: #1b263b;
+            --border-color: #415a77;
+        }
+        
+        /* NEW KEYFRAME ANIMATION: Moves the background horizontally (Right to Left) */
+        @keyframes starlight {
+            /* Start from position 0 0 */
+            from { background-position: 0 0; }
+            /* Move 1000px to the right, which visually pushes the stars to the LEFT */
+            to { background-position: 1000px 0; } 
+        }
+
+        body {
+            background-color: var(--primary-bg);
+            color: var(--text-color);
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            
+            /* MODIFIED: Background with Stardust image, gradient, and animation */
+            background-image: url('https://www.transparenttextures.com/patterns/stardust.png'), 
+                              linear-gradient(to bottom, #00000a, #1a1a2e);
+            background-attachment: fixed;
+            animation: starlight 60s linear infinite; /* 60 seconds duration for a slow, smooth flow */
+        }
+
+        header {
+            text-align: center;
+            padding: 2rem 1rem;
+        }
+
+        header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            color: var(--accent-glow);
+            text-shadow: 0 0 15px var(--accent-glow);
+            margin: 0;
+        }
+        
+        header p {
+            font-size: 1.1rem;
+            color: rgba(224, 225, 221, 0.8);
+        }
+
+        .nav-button {
+            display: inline-block;
+            margin-top: 1.5rem;
+            padding: 0.75rem 1.5rem;
+            border: 2px solid var(--border-color);
+            border-radius: 25px;
+            color: var(--text-color);
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .nav-button:hover {
+            background-color: var(--accent-glow);
+            border-color: var(--accent-glow);
+            color: var(--primary-bg);
+            box-shadow: 0 0 15px var(--accent-glow);
+            transform: translateY(-2px);
+        }
+
+        .solar-system-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            padding: 2rem 1rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .celestial-body {
+            background: transparent;
+            border: 2px solid var(--border-color);
+            color: var(--text-color);
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            position: relative;
+        }
+
+        .celestial-body:hover {
+            transform: scale(1.1);
+            border-color: var(--accent-glow);
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+        
+        .celestial-body.active {
+            border-color: white;
+            box-shadow: 0 0 20px white;
+            transform: scale(1.15);
+        }
+
+        /* Planet sizes for visual representation */
+        #sun { width: 120px; height: 120px; font-size: 1.5rem; border-color: var(--accent-glow); background-color: #ffcc0022; }
+        #mercury { width: 40px; height: 40px; }
+        #venus { width: 55px; height: 55px; }
+        #earth { width: 60px; height: 60px; }
+        #mars { width: 50px; height: 50px; }
+        #jupiter { width: 100px; height: 100px; }
+        #saturn { width: 90px; height: 90px; }
+        #uranus { width: 75px; height: 75px; }
+        #neptune { width: 70px; height: 70px; }
+        #pluto { width: 35px; height: 35px; }
+
+
+        #planet-info-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 2rem;
+            display: none; /* Hidden by default */
+            flex-direction: column;
+            gap: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .card-content {
+            display: flex;
+            gap: 2rem;
+            align-items: flex-start;
+        }
+
+        #planet-image {
+            width: 250px;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 10px;
+            background-color: #000;
+        }
+        
+        #planet-details {
+            flex-grow: 1;
+        }
+
+        #planet-name {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            margin: 0;
+            color: var(--accent-glow);
+            text-shadow: 0 0 5px var(--accent-glow);
+        }
+        
+        #planet-tagline {
+            font-size: 1.2rem;
+            margin: 0.2rem 0 1.5rem 0;
+            font-style: italic;
+            color: rgba(224, 225, 221, 0.7);
+        }
+
+        #planet-facts {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        #planet-facts li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        #planet-facts li:last-child {
+            border-bottom: none;
+        }
+        
+        #planet-facts strong {
+            color: var(--accent-glow);
+            min-width: 120px;
+            display: inline-block;
+        }
+
+        #planet-did-you-know {
+            background-color: #0a0a1a;
+            border-left: 4px solid var(--accent-glow);
+            padding: 1rem;
+            border-radius: 5px;
+            margin-top: 1.5rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            header h1 { font-size: 2.5rem; }
+            .solar-system-container { gap: 1rem; }
+            .celestial-body { font-size: 0.8rem; }
+            #sun { width: 100px; height: 100px; }
+            #jupiter { width: 80px; height: 80px; }
+            #saturn { width: 75px; height: 75px; }
+
+            .card-content { flex-direction: column; align-items: center; text-align: center; }
+            #planet-image { width: 200px; height: 200px; }
+            #planet-facts strong { display: block; margin-bottom: 0.2rem; }
+        }
+        
+        @media (max-width: 480px) {
+            .celestial-body {
+                width: 45px !important;
+                height: 45px !important;
+                font-size: 0.6rem;
+            }
+            #sun { width: 70px !important; height: 70px !important; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Interactive Solar System Explorer</h1>
+        <p>Click on a celestial body to reveal NASA-sourced data</p>
+        <a href="weather_impact.html" target="_blank" class="nav-button">Learn About Space Weather Impacts</a>
+
+        </header>
+
+    <main>
+        <div class="solar-system-container">
+            <button id="sun" class="celestial-body" data-planet="sun">The Sun</button>
+            <button id="mercury" class="celestial-body" data-planet="mercury">Merc</button>
+            <button id="venus" class="celestial-body" data-planet="venus">Venus</button>
+            <button id="earth" class="celestial-body" data-planet="earth">Earth</button>
+            <button id="mars" class="celestial-body" data-planet="mars">Mars</button>
+            <button id="jupiter" class="celestial-body" data-planet="jupiter">Jupiter</button>
+            <button id="saturn" class="celestial-body" data-planet="saturn">Saturn</button>
+            <button id="uranus" class="celestial-body" data-planet="uranus">Uranus</button>
+            <button id="neptune" class="celestial-body" data-planet="neptune">Neptune</button>
+            <button id="pluto" class="celestial-body" data-planet="pluto">Pluto</button>
+        </div>
+
+        <section id="planet-info-card">
+            <div class="card-content">
+                <img id="planet-image" src="" alt="Image of the selected celestial body">
+                <div id="planet-details">
+                    <h2 id="planet-name"></h2>
+                    <p id="planet-tagline"></p>
+                    <ul id="planet-facts"></ul>
+                </div>
+            </div>
+            <div id="planet-did-you-know"></div>
+        </section>
+    </main>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const planetData = {
+                sun: {
+                    name: 'The Sun',
+                    tagline: 'The Heart of Our Solar System',
+                    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/The_Sun_by_the_Atmospheric_Imaging_Assembly_of_NASA%27s_Solar_Dynamics_Observatory_-_20100819.jpg/1024px-The_Sun_by_the_Atmospheric_Imaging_Assembly_of_NASA%27s_Solar_Dynamics_Observatory_-_20100819.jpg',
+                    facts: {
+                        'Type': 'Star (Yellow Dwarf)',
+                        'Diameter': '1.39 million km',
+                        'Surface Temp': '5,505 °C',
+                        'Age': '4.6 Billion Years',
+                    },
+                    didYouKnow: 'The Sun accounts for 99.86% of the total mass in the solar system!'
+                },
+                mercury: {
+                    name: 'Mercury',
+                    tagline: 'The Swift Planet',
+                    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Mercury_in_true_color.jpg/1024px-Mercury_in_true_color.jpg',
+                    facts: {
+                        'Type': 'Terrestrial Planet',
+                        'Diameter': '4,879 km',
+                        'Day Length': '1,408 hours',
+                        'Year Length': '88 Earth Days',
+                        'Moons': '0'
+                    },
+                    didYouKnow: 'Despite being closest to the Sun, Mercury is not the hottest planet. It has extreme temperature swings from -173°C at night to 427°C during the day.'
+                },
+                venus: {
+                    name: 'Venus',
+                    tagline: 'The Morning & Evening Star',
+                    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Venus-real_color.jpg/1024px-Venus-real_color.jpg',
+                    facts: {
+                        'Type': 'Terrestrial Planet',
+                        'Diameter': '12,104 km',
+                        'Day Length': '5,832 hours (longer than its year!)',
+                        'Year Length': '225 Earth Days',
+                        'Moons': '0'
+                    },
+                    didYouKnow: 'Venus is the hottest planet in our solar system, with a thick, toxic atmosphere that creates a runaway greenhouse effect. It also rotates backwards compared to most other planets.'
+                },
+                earth: {
+                    name: 'Earth',
+                    tagline: 'Our Home Planet',
+                    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/The_Earth_seen_from_Apollo_17.jpg/1024px-The_Earth_seen_from_Apollo_17.jpg',
+                    facts: {
+                        'Type': 'Terrestrial Planet',
+                        'Diameter': '12,742 km',
+                        'Day Length': '24 hours',
+                        'Year Length': '365.25 Days',
+                        'Moons': '1'
+                    },
+                    didYouKnow: 'Earth is the only planet known to have liquid water on its surface, a key ingredient for the existence of life as we know it.'
+                },
+                mars: {
+                    name: 'Mars',
+                    tagline: 'The Red Planet',
+                    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/OSIRIS_Mars_true_color.jpg/1024px-OSIRIS_Mars_true_color.jpg',
+                    facts: {
+                        'Type': 'Terrestrial Planet',
+                        'Diameter': '6,779 km',
+                        'Day Length': '24.6 hours',
+                        'Year Length': '687 Earth Days',
+                        'Moons': '2 (Phobos & Deimos)'
+                    },
+                    didYouKnow: 'Mars is home to Olympus Mons, the largest volcano and tallest mountain in the solar system. It is nearly three times the height of Mount Everest.'
+                },
+                jupiter: {
+                    name: 'Jupiter',
+                    tagline: 'The Gas Giant King',
+                    // image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Jupiter_-_Io_in_front_%282022%29.png/1024px-Jupiter_-_Io_in_front_%282022%29.png',
+                    image : 'jupiter.jpg',
+                    facts: {
+                        'Type': 'Gas Giant',
+                        'Diameter': '139,820 km',
+                        'Day Length': '9.9 hours (Fastest spinning!)',
+                        'Year Length': '11.9 Earth Years',
+                        'Moons': '95 (known)'
+                    },
+                    didYouKnow: 'The Great Red Spot on Jupiter is a massive, centuries-old storm that is wider than our entire planet, Earth.'
+                },
+                saturn: {
+                    name: 'Saturn',
+                    tagline: 'The Ringed Jewel',
+                    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Saturn_during_Equinox.jpg/1920px-Saturn_during_Equinox.jpg',
+                    facts: {
+                        'Type': 'Gas Giant',
+                        'Diameter': '116,460 km',
+                        'Day Length': '10.7 hours',
+                        'Year Length': '29.5 Earth Years',
+                        'Moons': '146 (known)'
+                    },
+                    didYouKnow: 'Saturn\'s rings are not solid. They are made of billions of chunks of ice and rock, ranging in size from a grain of sugar to a house.'
+                },
+                uranus: {
+                    name: 'Uranus',
+                    tagline: 'The Ice Giant on its Side',
+                    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Uranus2.jpg/1024px-Uranus2.jpg',
+                    facts: {
+                        'Type': 'Ice Giant',
+                        'Diameter': '50,724 km',
+                        'Day Length': '17.2 hours',
+                        'Year Length': '84 Earth Years',
+                        'Moons': '27 (known)'
+                    },
+                    didYouKnown: 'Uranus is unique because it rotates on its side, with its axis tilted almost 98 degrees. This results in extreme seasons lasting over 20 years each.'
+                },
+                neptune: {
+                    name: 'Neptune',
+                    tagline: 'The Distant Blue World',
+                    // image: 'Neptu',
+                    image : 'Neptune.jpg',
+                    facts: {
+                        'Type': 'Ice Giant',
+                        'Diameter': '49,244 km',
+                        'Day Length': '16.1 hours',
+                        'Year Length': '164.8 Earth Years',
+                        'Moons': '14 (known)'
+                    },
+                    didYouKnow: 'Neptune is the windiest planet in our solar system. Winds can reach speeds of over 2,000 km/h, more than 1.5 times the speed of sound on Earth.'
+                },
+                pluto: {
+                    name: 'Pluto',
+                    tagline: 'The Distant Dwarf Planet',
+                    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Pluto_in_True_Color_-_High-Res.jpg/1024px-Pluto_in_True_Color_-_High-Res.jpg',
+                    facts: {
+                        'Type': 'Dwarf Planet',
+                        'Diameter': '2,377 km',
+                        'Day Length': '153 hours',
+                        'Year Length': '248 Earth Years',
+                        'Moons': '5 (known)'
+                    },
+                    didYouKnow: 'Pluto has a large, heart-shaped glacier on its surface named Tombaugh Regio, after its discoverer Clyde Tombaugh.'
+                }
+            };
+
+            const infoCard = document.getElementById('planet-info-card');
+            const planetImage = document.getElementById('planet-image');
+            const planetNameEl = document.getElementById('planet-name');
+            const planetTaglineEl = document.getElementById('planet-tagline');
+            const planetFactsEl = document.getElementById('planet-facts');
+            const planetDidYouKnowEl = document.getElementById('planet-did-you-know');
+            
+            const celestialButtons = document.querySelectorAll('.celestial-body');
+
+            celestialButtons.forEach(button => {
+                button.addEventListener('click', (event) => {
+                    const planetId = event.currentTarget.dataset.planet;
+                    updateInfoCard(planetId);
+                });
+            });
+
+            function updateInfoCard(planetId) {
+                const data = planetData[planetId];
+                if (!data) return;
+                
+                // Remove active class from all buttons
+                celestialButtons.forEach(btn => btn.classList.remove('active'));
+                // Add active class to the clicked button
+                document.getElementById(planetId).classList.add('active');
+
+                // Update content
+                planetImage.src = data.image;
+                planetImage.alt = `Image of ${data.name}`;
+                planetNameEl.textContent = data.name;
+                planetTaglineEl.textContent = data.tagline;
+                
+                planetFactsEl.innerHTML = ''; // Clear previous facts
+                for (const [key, value] of Object.entries(data.facts)) {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<strong>${key}:</strong> ${value}`;
+                    planetFactsEl.appendChild(li);
+                }
+                
+                planetDidYouKnowEl.innerHTML = `<strong>Did You Know?</strong><p>${data.didYouKnow}</p>`;
+
+                // Show the card
+                infoCard.style.display = 'flex';
+                // Scroll to the card for a better user experience on mobile
+                infoCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    </script>
+</body>
+</html>

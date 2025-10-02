@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosmic Rays: The Universe's Hidden Barrage</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #0d1b2a;
+            --secondary-color: #1b263b;
+            --text-color: #e0e1dd;
+            --accent-color: #9c27b0; /* A cosmic purple accent */
+            --glow-color-low: rgba(0, 174, 255, 0.6);   /* Blue */
+            --glow-color-medium: rgba(76, 175, 80, 0.7); /* Green */
+            --glow-color-high: rgba(255, 152, 0, 0.8);  /* Orange */
+            --glow-color-extreme: rgba(244, 67, 54, 0.9);/* Red */
+        }
+
+        /* NEW KEYFRAME ANIMATION: Moves the background horizontally (Right to Left) */
+        @keyframes starlight {
+            /* We move the background position to the right (positive X value) to make the pattern appear to move left */
+            from { background-position: 0 0; }
+            to { background-position: 1000px 0; } 
+        }
+
+        body {
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            
+            /* MODIFIED: Add animation and background-attachment for continuous effect */
+            background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
+            background-attachment: fixed; 
+            animation: starlight 60s linear infinite; /* 60s for slow, smooth movement */
+        }
+
+        header {
+            background: var(--secondary-color);
+            text-align: center;
+            padding: 2rem 1rem;
+            border-bottom: 3px solid var(--accent-color);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            color: var(--accent-color);
+            text-shadow: 0 0 10px var(--accent-color);
+        }
+
+        main {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .card {
+            background-color: var(--secondary-color);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            border: 1px solid #415a77;
+        }
+
+        h2, h3 {
+            color: var(--text-color);
+            border-bottom: 2px solid #415a77;
+            padding-bottom: 0.5rem;
+        }
+
+        h3 {
+            text-align: center;
+            font-size: 1.8rem;
+            margin-top: 2rem;
+            transition: color 0.3s ease;
+        }
+
+        /* Interactive Slider */
+        .slider-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .slider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 60%;
+            height: 10px;
+            background: #415a77;
+            outline: none;
+            opacity: 0.8;
+            transition: opacity .2s;
+            border-radius: 5px;
+        }
+
+        .slider:hover {
+            opacity: 1;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 25px;
+            height: 25px;
+            background: var(--accent-color);
+            cursor: pointer;
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--accent-color);
+        }
+
+        .slider::-moz-range-thumb {
+            width: 25px;
+            height: 25px;
+            background: var(--accent-color);
+            cursor: pointer;
+            border-radius: 50%;
+        }
+
+        .label {
+            font-weight: bold;
+        }
+
+        /* Impact Grid */
+        .impact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .impact-card {
+            background: #0d1b2a;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid #415a77;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .impact-card h4 {
+            margin-top: 0;
+            color: var(--accent-color);
+        }
+
+        /* Glow effects for interactivity */
+        .glow-low { box-shadow: 0 0 15px var(--glow-color-low); }
+        .glow-medium { box-shadow: 0 0 20px var(--glow-color-medium); }
+        .glow-high { box-shadow: 0 0 25px var(--glow-color-high); }
+        .glow-extreme { box-shadow: 0 0 30px var(--glow-color-extreme); transform: scale(1.02); }
+
+        /* Live Data Section */
+        .live-data-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            text-align: center;
+        }
+        
+        .live-img {
+            max-width: 100%;
+            border-radius: 8px;
+            border: 2px solid #415a77;
+            background-color: #ffffff;
+            display: block; /* Ensure it takes up its own line */
+            margin: 0 auto; /* Center the image */
+        }
+        
+        figcaption {
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1rem;
+            margin-top: 2rem;
+            font-size: 0.9rem;
+            color: #778da9;
+            border-top: 1px solid #1b263b;
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Cosmic Rays</h1>
+        <p>Exploring the high-energy particles raining down from space</p>
+    </header>
+
+    <main>
+        <section class="card">
+            <h2>What Are Cosmic Rays?</h2>
+            <p>Cosmic rays are highly energetic atomic nuclei and other particles traveling through space at nearly the speed of light. They are not "rays" but physical particles. They originate from the Sun, from outside of the solar system in our own galaxy (Galactic Cosmic Rays or GCRs), and from distant galaxies.</p>
+            <p>When these particles slam into Earth's atmosphere, they create a shower of secondary particles that rain down through the air, some of which can be detected at the surface.</p>
+        </section>
+
+        <section class="card">
+            <h2>Earth's Double Shield</h2>
+            <p>Fortunately, we are well-protected from the constant cosmic ray bombardment. Earth has two main layers of defense:</p>
+            <ul>
+                <li><strong>The Magnetosphere:</strong> This magnetic field deflects the majority of lower-energy cosmic rays, shielding the planet from a significant amount of radiation.</li>
+                <li><strong>The Atmosphere:</strong> The thick blanket of air above us acts as a physical shield. Cosmic rays that make it through the magnetosphere collide with air molecules, losing energy and breaking apart into less harmful secondary particles.</li>
+            </ul>
+        </section>
+
+        <section id="interactive-section" class="card">
+            <h2>Impacts by Altitude</h2>
+            <p>Our protection from cosmic rays diminishes rapidly with altitude. The higher you go, the less atmosphere there is to shield you. <strong>Drag the slider below to see how the risks change.</strong></p>
+            
+            <div class="slider-container">
+                <span class="label">Low</span>
+                <input type="range" min="1" max="4" value="1" class="slider" id="altitude-slider" aria-label="Altitude and cosmic ray impact selector">
+                <span class="label">Extreme</span>
+            </div>
+            
+            <h3 id="altitude-level-title">Sea Level</h3>
+
+            <div class="impact-grid">
+                <div id="impact-tech" class="impact-card">
+                    <h4>💻 Technology</h4>
+                    <p id="tech-text">Minimal risk. Modern microchips are hardened, but a rare "single-event upset" (a bit flip in memory) can still theoretically occur from a secondary particle.</p>
+                </div>
+                <div id="impact-aviation" class="impact-card">
+                    <h4>✈️ Aviation</h4>
+                    <p id="aviation-text">This is the baseline level. Commercial aviation operates at much higher altitudes where exposure is a concern.</p>
+                </div>
+                <div id="impact-life" class="impact-card">
+                    <h4>🧬 Life & Health</h4>
+                    <p id="life-text">Background radiation from cosmic rays contributes a small fraction of the total natural radiation we receive annually. It is considered a negligible health risk.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>Live Space Radiation Environment</h2>
+            <p>The GOES satellites constantly monitor the energetic particle flux (including cosmic rays) around Earth. This graph shows the proton flux, a key indicator of space radiation levels, which directly relates to cosmic ray activity.</p>
+            <div class="live-data-grid">
+                <figure>
+                    <figcaption>GOES Energetic Proton Flux - 1 Day</figcaption>
+                    <a href="https://www.swpc.noaa.gov/products/goes-proton-flux" target="_blank" rel="noopener noreferrer">
+                        <img src="protonflux.png" alt="Live graph of GOES satellite energetic proton flux from NOAA" class="live-img">
+                       
+                        </a>
+                    <p><small>Data courtesy of the NOAA Space Weather Prediction Center.</small></p>
+                </figure>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>Interactive webpage created by SaVeya Group. Information based on data from NASA and various research institutions.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const slider = document.getElementById('altitude-slider');
+            const altitudeTitle = document.getElementById('altitude-level-title');
+            const techText = document.getElementById('tech-text');
+            const aviationText = document.getElementById('aviation-text');
+            const lifeText = document.getElementById('life-text');
+            const allCards = [document.getElementById('impact-tech'), document.getElementById('impact-aviation'), document.getElementById('impact-life')];
+            const altitudeData = {
+                '1': { title: "Sea Level", tech: "Minimal risk. Modern microchips are hardened, but a rare 'single-event upset' (a bit flip in memory) can still theoretically occur from a secondary particle.", aviation: "This is the baseline level. Commercial aviation operates at much higher altitudes where exposure is a concern.", life: "Background radiation from cosmic rays contributes a small fraction of the total natural radiation we receive annually. It is considered a negligible health risk.", glowClass: "glow-low", titleColor: "#00aeff" },
+                '2': { title: "Aviation Altitude (~35,000 ft)", tech: "Increased risk of single-event upsets in avionics. Aircraft electronics are heavily shielded and use redundant systems to mitigate this risk.", aviation: "Aircrew and frequent flyers receive higher radiation doses than the general public. Doses are monitored to stay within safe occupational limits.", life: "A single long-haul flight can expose a person to more radiation than a dental x-ray. The risk is cumulative for frequent flyers.", glowClass: "glow-medium", titleColor: "#4caf50" },
+                '3': { title: "Low Earth Orbit (ISS)", tech: "Satellites and the ISS require significant radiation hardening. Cosmic rays can damage solar panels, degrade electronics, and cause phantom commands.", aviation: "Not applicable. This is the realm of spacecraft.", life: "Astronauts receive daily radiation doses hundreds of times higher than on Earth. Shielding, mission duration limits, and health monitoring are critical.", glowClass: "glow-high", titleColor: "#ff9800" },
+                '4': { title: "Outside Magnetosphere (Interplanetary Space)", tech: "Extreme hazard. Unshielded electronics would fail quickly. Robotic probes must be specially designed to survive the constant GCR flux and solar particle events.", aviation: "Not applicable.", life: "The primary health risk for future missions to the Moon or Mars. A major solar particle event could deliver a lethal dose of radiation to an unshielded astronaut.", glowClass: "glow-extreme", titleColor: "#f44336" }
+            };
+            function updateImpacts(value) {
+                const data = altitudeData[value];
+                altitudeTitle.textContent = data.title;
+                altitudeTitle.style.color = data.titleColor;
+                techText.textContent = data.tech;
+                aviationText.textContent = data.aviation;
+                lifeText.textContent = data.life;
+                allCards.forEach(card => {
+                    card.className = 'impact-card'; // Reset classes
+                    card.classList.add(data.glowClass);
+                });
+            }
+            slider.addEventListener('input', (event) => updateImpacts(event.target.value));
+            updateImpacts(slider.value);
+        });
+    </script>
+</body>
+</html>

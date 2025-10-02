@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosmic Explainer & Universal Search</title>
+    <style>
+        :root {
+            --star-color: #c9d1d9;
+            --primary-bg: #0d1117;
+            --container-bg: #161b22;
+            --border-color: #30363d;
+            --accent-color: #58a6ff;
+        }
+
+        /* NEW KEYFRAME ANIMATION: Moves the background horizontally (Right to Left) */
+        @keyframes starlight {
+            /* Move 1000px to the right, which visually pushes the stars to the LEFT */
+            from { background-position: 0 0; }
+            to { background-position: 1000px 0; } 
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--primary-bg); /* Dark background for space theme */
+            color: var(--star-color);
+            line-height: 1.6;
+            
+            /* MODIFIED: Background with Stardust image, gradient, and animation */
+            background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
+            background-attachment: fixed;
+            animation: starlight 60s linear infinite; /* 60 seconds duration for a slow, smooth flow */
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: var(--container-bg);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            border-radius: 8px;
+            position: relative; /* Ensure container content is above the moving background */
+        }
+        
+        header {
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--border-color);
+        }
+        header h1 {
+            color: var(--accent-color); /* NASA blue */
+        }
+        .section-title {
+            color: var(--accent-color);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
+        
+        /* Universal Search Bar Styles */
+        .search-container {
+            text-align: center;
+            padding: 20px 0;
+        }
+        .search-form {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .search-input {
+            width: 70%;
+            padding: 12px 15px;
+            border: 2px solid var(--accent-color);
+            border-radius: 25px;
+            background-color: var(--primary-bg);
+            color: var(--star-color);
+            font-size: 1em;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        .search-input:focus {
+            border-color: #79c0ff;
+        }
+        .search-button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            background-color: var(--accent-color);
+            color: var(--primary-bg);
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.1s;
+        }
+        .search-button:hover {
+            background-color: #79c0ff;
+        }
+        .search-button:active {
+            transform: scale(0.98);
+        }
+
+        /* NASA APOD Styles */
+        .apod-content {
+            margin-top: 30px;
+            text-align: center;
+        }
+        .apod-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            border: 3px solid var(--accent-color);
+            box-shadow: 0 0 15px rgba(88, 166, 255, 0.5);
+        }
+        .apod-video {
+            width: 100%;
+            height: 450px;
+            border-radius: 6px;
+            border: 3px solid var(--accent-color);
+        }
+        .apod-title {
+            color: #fff;
+            font-size: 1.8em;
+            margin-bottom: 10px;
+        }
+        .apod-explanation {
+            text-align: left;
+            padding: 0 15px;
+            font-size: 1.1em;
+            background-color: #21262d;
+            padding: 15px;
+            border-radius: 4px;
+        }
+        .loading {
+            text-align: center;
+            font-size: 1.2em;
+            color: var(--accent-color);
+            padding: 50px;
+        }
+        
+        @media (max-width: 600px) {
+            .search-form {
+                flex-direction: column;
+                align-items: center;
+            }
+            .search-input, .search-button {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Cosmic Explainer & Universal Search</h1>
+            <p>Your portal for NASA data and finding information online.</p>
+        </header>
+
+        <h2 class="section-title">Universal Search</h2>
+        <div class="search-container">
+            <p style="color: #8b949e; margin-bottom: 5px;">Search for anything—people, space, or general information.</p>
+            
+            <form class="search-form" method="GET" action="https://www.google.com/search" target="_blank">
+                <input 
+                    type="search" 
+                    class="search-input" 
+                    name="q" 
+                    placeholder="Enter your search query here..." 
+                    required>
+                
+                <button type="submit" class="search-button">
+                    Search
+                </button>
+            </form>
+        </div>
+
+        <h2 class="section-title">NASA's Astronomy Picture of the Day</h2>
+        <div id="apod-data" class="apod-content">
+            <div class="loading">Loading today's cosmic explanation...</div>
+            </div>
+        
+    </div>
+
+    <script>
+        // ************************************************************
+        // 1. GET YOUR API KEY:
+        // IMPORTANT: Replace 'YOUR_NASA_API_KEY' with the key you received 
+        // after registering on api.nasa.gov. 
+        // You can use 'DEMO_KEY' for testing, but it has low limits.
+        // ************************************************************
+        const API_KEY = '2FBoBJZ69q3LrwjQppufp9rB7nyY6r5y2MbsFage';
+        const API_URL = `https://api.nasa.gov/planetary/apod?api_key=${API_KEY}`;
+
+        // Function to fetch data from the NASA APOD API
+        async function fetchAPOD() {
+            try {
+                const response = await fetch(API_URL);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                const data = await response.json();
+                displayAPOD(data);
+            } catch (error) {
+                console.error('Error fetching the APOD data:', error);
+                document.getElementById('apod-data').innerHTML = `
+                    <div style="color: red; padding: 20px;">
+                        Error loading content. Please check your network connection 
+                        and ensure your API key is correct and not exceeding the rate limit.<br>
+                        Detail: ${error.message}
+                    </div>
+                `;
+            }
+        }
+
+        // Function to display the data on the web page
+        function displayAPOD(data) {
+            const apodDiv = document.getElementById('apod-data');
+            
+            // Start building the HTML content
+            let contentHTML = `<h2 class="apod-title">${data.title}</h2>`;
+
+            // Check if it's an image or a video
+            if (data.media_type === 'video') {
+                // If it's a video, use an iframe to embed it
+                contentHTML += `
+                    <iframe 
+                        src="${data.url}" 
+                        frameborder="0" 
+                        allowfullscreen 
+                        class="apod-video">
+                    </iframe>
+                `;
+            } else {
+                // If it's an image (or other media type), use an img tag
+                contentHTML += `
+                    <img 
+                        src="${data.url}" 
+                        alt="${data.title}" 
+                        class="apod-image">
+                `;
+            }
+
+            // Add the 'AI Explanation' (the text provided by the API)
+            contentHTML += `
+                <div class="apod-explanation">
+                    <strong>The NASA Explanation:</strong>
+                    <p>${data.explanation}</p>
+                    <p style="font-size: 0.9em; color: #8b949e;">
+                        &mdash; Date: ${data.date}
+                        ${data.copyright ? `&bull; Credit: ${data.copyright}` : ''}
+                    </p>
+                </div>
+            `;
+            
+            // Insert the generated HTML into the page
+            apodDiv.innerHTML = contentHTML;
+        }
+
+        // Call the fetch function when the page loads
+        document.addEventListener('DOMContentLoaded', fetchAPOD);
+    </script>
+</body>
+</html>

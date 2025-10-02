@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosmic Journey: Interactive Space Exploration</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-bg: #00000a; 
+            --text-color: #e0e1dd;
+            --accent-glow: #00eaff; 
+            --button-bg: #1a1a2e;
+            --button-border: #0f3460;
+            --button-hover-bg: #2a2a4a;
+            --active-glow: rgba(0, 234, 255, 0.8);
+            --quote-bg: #0f3460; 
+        }
+
+        /* NEW KEYFRAME ANIMATION: Moves the background horizontally (Right to Left) */
+        @keyframes starlight {
+            /* Start from position 0 0 */
+            from { background-position: 0 0; }
+            /* Move 1000px to the right, which visually pushes the stars to the LEFT */
+            to { background-position: 1000px 0; } 
+        }
+
+        body {
+            background-color: var(--primary-bg); 
+            color: var(--text-color);
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            
+            /* Background Image and Animation */
+            background-image: url('https://www.transparenttextures.com/patterns/stardust.png'), 
+                              linear-gradient(to bottom, var(--primary-bg), #1a1a2e); 
+            background-attachment: fixed;
+            /* Animation applied: 40 seconds duration for slow, smooth movement */
+            animation: starlight 40s linear infinite; 
+
+            overflow-x: hidden;
+            padding-bottom: 5rem;
+        }
+
+        header {
+            text-align: center;
+            padding: 3rem 1rem 2rem;
+        }
+
+        header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3.5rem;
+            color: var(--accent-glow);
+            text-shadow: 0 0 20px var(--accent-glow), 0 0 30px rgba(0, 234, 255, 0.5);
+            margin: 0 0 0.5rem 0;
+            letter-spacing: 2px;
+            animation: pulseGlow 3s infinite alternate;
+        }
+
+        @keyframes pulseGlow {
+            0% { text-shadow: 0 0 20px var(--accent-glow), 0 0 30px rgba(0, 234, 255, 0.5); }
+            100% { text-shadow: 0 0 25px var(--accent-glow), 0 0 40px rgba(0, 234, 255, 0.7); }
+        }
+
+        .button-container {
+            display: flex;
+            flex-wrap: wrap; 
+            justify-content: center;
+            gap: 2.5rem; 
+            max-width: 1200px;
+            padding: 0 1rem;
+            margin-bottom: 4rem; 
+        }
+        
+        .interactive-button-wrapper {
+            position: relative; 
+            display: block;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .interactive-button {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 280px; 
+            height: 280px; 
+            background-color: var(--button-bg);
+            border: 2px solid var(--button-border);
+            border-radius: 15px;
+            cursor: pointer; 
+            color: var(--text-color);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-align: center;
+            box-shadow: 0 0 15px rgba(0, 234, 255, 0.3), 0 0 30px rgba(0, 234, 255, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .interactive-button-wrapper:hover .interactive-button {
+            transform: translateY(-10px) scale(1.03);
+            background-color: var(--button-hover-bg);
+            border-color: var(--accent-glow);
+            box-shadow: 0 0 25px var(--accent-glow), 0 0 50px rgba(0, 234, 255, 0.5);
+            color: white;
+        }
+        
+        .interactive-button.active {
+            transform: scale(1.05);
+            background-color: var(--button-hover-bg);
+            border-color: var(--accent-glow);
+            box-shadow: 0 0 30px var(--active-glow), 0 0 60px rgba(0, 234, 255, 0.6);
+        }
+
+        /* CSS for the small hover-over content (Tooltip) */
+        .hover-info {
+            position: absolute;
+            bottom: 100%; 
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--accent-glow);
+            color: var(--primary-bg);
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            white-space: nowrap; 
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            z-index: 20;
+            pointer-events: none;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .interactive-button-wrapper:hover .hover-info {
+            visibility: visible;
+            opacity: 1;
+            transform: translateX(-50%) translateY(-10px); 
+        }
+
+        .button-icon {
+            font-size: 3.5rem;
+            margin-bottom: 0.8rem;
+            color: var(--accent-glow);
+            text-shadow: 0 0 10px var(--accent-glow);
+            transition: transform 0.3s ease;
+        }
+
+        .interactive-button-wrapper:hover .button-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+        
+        .interactive-button.active .button-icon {
+            transform: scale(1.15);
+        }
+
+
+        /* Content Area Styling - Background is a dark overlay to improve text readability */
+        #fact-display-area {
+            max-width: 1200px;
+            width: 90%;
+            min-height: 350px;
+            background-color: rgba(10, 10, 26, 0.8); 
+            border: 2px solid var(--button-border);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 0 20px rgba(0, 234, 255, 0.2);
+            position: relative;
+        }
+
+        .fact-content {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .fact-content.active {
+            display: block;
+            opacity: 1;
+        }
+
+        .fact-content h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.2rem;
+            color: var(--accent-glow);
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--accent-glow);
+            padding-bottom: 0.5rem;
+        }
+
+        .fact-content ul {
+            list-style: none;
+            padding-left: 0;
+            margin-top: 1rem;
+        }
+
+        .fact-content ul li {
+            background-color: rgba(15, 52, 96, 0.3); 
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            border-left: 5px solid var(--accent-glow);
+            border-radius: 5px;
+            font-size: 1.1rem;
+            list-style-type: disc; 
+            padding-left: 30px; 
+            list-style-position: inside;
+        }
+        
+        .fact-content ul li::marker {
+            color: var(--accent-glow);
+        }
+        
+        .fact-content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            background-color: var(--button-bg);
+            border: 1px solid var(--accent-glow);
+        }
+        
+        /* Extra Feature: Quote Box */
+        #space-quote-box {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background-color: var(--quote-bg);
+            border-radius: 10px;
+            border-left: 8px solid var(--accent-glow);
+            box-shadow: 0 0 10px rgba(0, 234, 255, 0.3);
+            font-style: italic;
+            color: var(--text-color);
+            text-shadow: 0 0 3px #000;
+        }
+        
+        #space-quote-box p {
+            margin: 0;
+            font-size: 1.2rem;
+        }
+        #space-quote-box cite {
+            display: block;
+            margin-top: 10px;
+            text-align: right;
+            font-style: normal;
+            font-weight: 700;
+            color: var(--accent-glow);
+        }
+
+
+        footer {
+            position: fixed;
+            bottom: 0;
+            padding: 1.5rem;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #778da9;
+            background-color: var(--button-bg); 
+            width: 100%;
+            border-top: 1px solid var(--button-border);
+            box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2.5rem;
+            }
+            .interactive-button {
+                width: 250px;
+                height: 250px;
+                font-size: 1.3rem;
+            }
+            #fact-display-area {
+                width: 95%;
+                padding: 1rem;
+            }
+            .fact-content h2 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+
+</head>
+<body>
+
+    <header>
+        <h1>COSMIC JOURNEY</h1>
+        <p>Explore the wonders and impacts of space</p>
+    </header>
+
+    <main class="button-container">
+        
+        <a href="satelite.html" 
+           class="interactive-button-wrapper" 
+           data-target="satellites" 
+           target="_blank" 
+           data-link="true">
+               
+            <div class="interactive-button active">
+                <span class="button-icon">🛰️</span>
+                Satellites & Technology
+            </div>
+            
+            <div class="hover-info">
+                Click to visit the more about satelite and Technology!
+            </div>
+        </a>
+
+        <a href="explorCopy.html" class="interactive-button-wrapper" data-target="solar" data-link="true">
+            <div class="interactive-button">
+                <span class="button-icon">🪐</span>
+                Exploring Our Solar System
+            </div>
+            <div class="hover-info">
+                Click to explore Solar System.
+            </div>
+        </a>
+
+        <a href="Ai_explain.html" class="interactive-button-wrapper" data-target="ai" data-link="true">
+            <div class="interactive-button">
+                <span class="button-icon" role="img" aria-label="AI explanation">✨</span>
+                AI explanation
+            </div>
+            <div class="hover-info">
+                Click for know about anything.
+            </div>
+        </a>
+    </main>
+    
+    <section id="fact-display-area">
+        
+        <div id="content-satellites" class="fact-content active">
+            <h2>🛰️ NASA Fact: Next-Generation Technology</h2>
+            <img src="DSOC.png" alt="Conceptual image of NASA's Deep Space Optical Communication." />
+
+            <ul>
+                <li>NASA is driving the next generation of space communication and hardware. Key technological advances are essential for supporting long-duration human missions and increasing data return from deep space probes.</li>
+                <li>Current Areas of Innovation include Deep Space Optical Communications (DSOC) for **100 times faster** data transmission.</li>
+                <li>The **Artemis Program & SLS** are crucial components for returning humans to the Moon.</li>
+                <li>**In-Situ Resource Utilization (ISRU)** is being developed to convert lunar/Martian resources into fuel, oxygen, and water, enabling sustainable habitat development.</li>
+                <li>There is an increasing use of **CubeSats and SmallSats** for low-cost, high-frequency data collection.</li>
+            </ul>
+        </div>
+        
+        <div id="content-solar" class="fact-content">
+            <h2>🪐 NASA Fact: Exploration Frontier - The Icy Worlds</h2>
+            <img src="Europa cliper mission.webp" alt="Artistic view of Europa, Jupiter's icy moon." />
+            
+            <ul>
+                <li>The search for life has increasingly focused on the outer solar system's icy moons, which may harbor subsurface oceans.</li>
+                <li>The **Europa Clipper** is a major mission to Jupiter's moon **Europa**, a prime candidate for hosting extraterrestrial life due to its vast, salty ocean beneath its icy crust.</li>
+                <li>The **Perseverance Rover** on Mars is actively collecting core samples for the future **Mars Sample Return** mission.</li>
+                <li>The **Parker Solar Probe** continues its daring approach to the Sun, gathering the first direct measurements of the solar wind's origin and the Sun's magnetic field.</li>
+            </ul>
+        </div>
+
+        <div id="content-ai" class="fact-content">
+            <h2>✨ NASA Fact: AI for Autonomous Discovery</h2>
+            <img src="Ai assisted rover.jpg" alt="Conceptual image of an AI-assisted rover selecting a sample." />
+            
+            <ul>
+                <li>Artificial Intelligence (AI) and Machine Learning (ML) are vital for missions involving long communication delays.</li>
+                <li>**Autonomous Sampling** allows rovers like Perseverance to make immediate, onboard decisions—such as **identifying the most scientifically valuable rocks to drill and sample**—without requiring real-time human intervention.</li>
+                <li>**Data Triage and Prioritization** using AI filters the enormous volume of data collected by spacecraft, ensuring the most critical observations are sent back first.</li>
+                <li>Machine Learning algorithms rapidly analyze data from telescopes (like TESS) to accelerate **Exoplanet Confirmation** by confirming or rejecting thousands of potential candidates.</li>
+            </ul>
+        </div>
+        
+        <div id="space-quote-box">
+            <p id="quote-text">Click any of the topic buttons above to get a new space quote!</p>
+            <cite id="quote-cite">Cosmic Explorer</cite>
+        </div>
+
+    </section>
+
+    <footer>
+        <p>Created by SaVeya Group for an interactive space learning experience. | NASA Facts are sourced from public domain mission information.</p>
+    </footer>
+
+    <script>
+        const SPACE_QUOTES = [
+            { text: "That's one small step for a man, one giant leap for mankind.", cite: "Neil Armstrong" },
+            { text: "The universe is under no obligation to make sense to you.", cite: "Neil deGrasse Tyson" },
+            { text: "Exploration is the engine that drives innovation.", cite: "Edith Widder" },
+            { text: "Equipped with his five senses, man explores the universe around him and calls the adventure Science.", cite: "Edwin Hubble" },
+            { text: "The Earth is the cradle of humanity, but mankind cannot stay in the cradle forever.", cite: "Konstantin Tsiolkovsky" }
+        ];
+
+        function getRandomQuote() {
+            const index = Math.floor(Math.random() * SPACE_QUOTES.length);
+            return SPACE_QUOTES[index];
+        }
+
+        function updateQuote() {
+            const quote = getRandomQuote();
+            document.getElementById('quote-text').textContent = `"${quote.text}"`;
+            document.getElementById('quote-cite').textContent = `- ${quote.cite}`;
+        }
+        
+        function showContent(targetId) {
+            const factButtons = document.querySelectorAll('.interactive-button');
+            const contents = document.querySelectorAll('.fact-content');
+            
+            // 1. Update Buttons
+            factButtons.forEach(button => {
+                if (button.getAttribute('data-target') === targetId) {
+                    button.classList.add('active');
+                } else {
+                    button.classList.remove('active');
+                }
+            });
+
+            // 2. Update Content (with fade transition)
+            contents.forEach(content => {
+                if (content.id === `content-${targetId}`) {
+                    content.style.opacity = '0';
+                    content.classList.add('active');
+                    setTimeout(() => {
+                        content.style.opacity = '1';
+                    }, 50); 
+                } else {
+                    content.style.opacity = '0';
+                    setTimeout(() => {
+                        content.classList.remove('active');
+                    }, 300); 
+                }
+            });
+            
+            // 3. Update the Quote
+            updateQuote();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const anchorButtons = document.querySelectorAll('.interactive-button-wrapper'); 
+            
+            anchorButtons.forEach(anchor => {
+                anchor.addEventListener('click', (event) => {
+                    const targetId = anchor.getAttribute('data-target');
+                    const isExternalLink = anchor.hasAttribute('data-link'); 
+
+                    if (isExternalLink) {
+                        showContent(targetId); 
+                    } else {
+                        event.preventDefault(); 
+                        showContent(targetId);
+                    }
+                });
+            });
+
+            // Initial load
+            showContent('satellites');
+            updateQuote(); 
+        });
+    </script>
+</body>
+</html>
